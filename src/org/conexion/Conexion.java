@@ -92,6 +92,16 @@ public class Conexion {
 		return response;
 	} 
 	
+	public String post(String path, Map<String, String> params, String body){
+		String response = null;
+		try {
+			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)), "POST", body);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return response;
+	} 
+	
 	public String crearConexion(String url, String method, String body) throws IOException{
 		
 		URL urlFacturu = new URL(url);
