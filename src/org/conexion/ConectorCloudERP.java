@@ -1,5 +1,6 @@
 package org.conexion;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,8 +9,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
 
-public class Conexion {
+
+public class ConectorCloudERP {
 
 	private String api_url_test;
 	
@@ -21,7 +24,7 @@ public class Conexion {
 	
 	private String secretKey;
 	
-	public Conexion(String url_prod, String url_test){
+	public ConectorCloudERP(String url_prod, String url_test){
 		this.api_url_produccion = url_prod;
 		this.api_url_test = url_test;
 	}
@@ -92,8 +95,8 @@ public class Conexion {
 		return response;
 	} 
 	
-	public String post(String path, Map<String, String> params, String body){
-		String response = null;
+	public ResponseCloudERP post(String path, Map<String, String> params, String body){
+		ResponseCloudERP response = null;
 		try {
 			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)), "POST", body);
 		} catch (IOException e) {
@@ -102,7 +105,7 @@ public class Conexion {
 		return response;
 	} 
 	
-	public String crearConexion(String url, String method, String body) throws IOException{
+	public ResponseCloudERP crearConexion(String url, String method, String body) throws IOException{
 		
 		URL urlFacturu = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) urlFacturu.openConnection();
@@ -111,8 +114,9 @@ public class Conexion {
 		connection.setDoInput(true);
 		OutputStreamWriter writer = null;
 		
-		connection.setRequestProperty("Authorization", this.getCredenciales());
-		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		if(this.getCredenciales() != null && !this.getCredenciales().isEmpty())
+			connection.setRequestProperty("Authorization", this.getCredenciales());
+		connection.setRequestProperty("Content-Type", "application/json");
 		
 		if (body != null && !body.isEmpty()) {
 			writer = new OutputStreamWriter(connection.getOutputStream());
@@ -124,8 +128,12 @@ public class Conexion {
 		reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String response = recorrerBuffered(reader);
 		reader.close();
+		ResponseCloudERP responseCloud = new ResponseCloudERP();
+		responseCloud.setBodyString(response);
+		responseCloud.setSuccessful(connection.getResponseCode() ==  HttpsURLConnection.HTTP_OK);
 		connection.disconnect();
-		return response;
+		
+		return responseCloud;
 	}
 	
 	private String getCredenciales() {
@@ -155,14 +163,20 @@ public class Conexion {
 		String query = "";
 		for (String key : params.keySet()) {
 			String value = params.get(key);
-			query = query + key + "=" + value + "&";
-
+			if(query.length() > 0)
+				query += "&";
+			else
+				query += key + "=" + value;
 		}
 		return query;
 	}
 	
 	private String prepareApiUrl(String path, String query) {
-		return getURL() + path + "?" + query;
+		if (query != null && !query.isEmpty()){
+			return getURL() + path + "?" + query;
+		}else{
+			return getURL() + path;
+		}
 	}
 	public String getURL() {
 		if(this.inProduction){
