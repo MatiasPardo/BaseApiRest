@@ -77,7 +77,7 @@ public class ConectorCloudERP {
 		
 		String response = null;
 		try {
-			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)),"GET", null);
+			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)),"GET", null).getBodyString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ public class ConectorCloudERP {
 		StringBuffer bodyConCFE = new StringBuffer(body);
 		String response = null;
 		try {
-			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)), "PUT", bodyConCFE.toString());
+			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)), "PUT", bodyConCFE.toString()).getBodyString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -9,9 +9,9 @@ import com.google.gson.JsonObject;
 public class Pruebas {
 
 	public static void main(String[] args) {
-//		pruebaGet();
+		pruebaGet();
 	
-		pruebaPost();
+//		pruebaPost();
 	}
 
 	private static void pruebaPost() {

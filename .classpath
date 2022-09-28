@@ -6,6 +6,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Google Drive/Documentos Imporantes/Proyectos de desarrollo/Proyectos de Ecommerce/Integracion/Jar para Ecommerce/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="C:/Desarrollo/MiOpenxava/jars/gson-2.8.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
