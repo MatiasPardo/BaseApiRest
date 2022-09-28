@@ -1,6 +1,6 @@
 package org.conexion;
 
-public class ResponseCloudERP {
+public class Response {
 
 	String bodyString;
 	

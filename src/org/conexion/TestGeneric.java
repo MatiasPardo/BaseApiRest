@@ -3,10 +3,10 @@ package org.conexion;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.conexion.ConectorCloudERP;
+import org.conexion.Connection;
 import com.google.gson.JsonObject;
 
-public class Pruebas {
+public class TestGeneric {
 
 	public static void main(String[] args) {
 		pruebaGet();
@@ -15,7 +15,7 @@ public class Pruebas {
 	}
 
 	private static void pruebaPost() {
-		ConectorCloudERP con = new ConectorCloudERP("http://localhost:8091/api/email/", "");
+		Connection con = new Connection("http://localhost:8091/api/email/", ""); //Api local
 		Map<String,String> params = new HashMap<String,String>();
 		con.isProduction(true);
 //		params.put("esquema", "MoraPanty");
@@ -34,7 +34,7 @@ public class Pruebas {
 		jsonEmail.addProperty("htmlContent", false);
 		jsonEmail.addProperty("schema", "MoraPanty");
 		jsonEmail.addProperty("filename", "IA-Algoritmos_Geneticos_1C2022.pdf");	
-		ResponseCloudERP resp = con.post("send", params, jsonEmail.toString());
+		Response resp = con.post("send", params, jsonEmail.toString());
 		System.out.println(resp.getBodyString());
 		System.out.println(" Envio correcto: " + resp.getSuccessful());
 		
@@ -43,7 +43,7 @@ public class Pruebas {
 	}
 
 	private static void pruebaGet() {
-		ConectorCloudERP con = new ConectorCloudERP("https://www.dolarsi.com/api/", "");
+		Connection con = new Connection("https://www.dolarsi.com/api/", "");
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("type", "valoresprincipales");
 		System.out.print(con.get("api.php", params));

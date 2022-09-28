@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class ConectorCloudERP {
+public class Connection {
 
 	private String api_url_test;
 	
@@ -24,7 +24,7 @@ public class ConectorCloudERP {
 	
 	private String secretKey;
 	
-	public ConectorCloudERP(String url_prod, String url_test){
+	public Connection(String url_prod, String url_test){
 		this.api_url_produccion = url_prod;
 		this.api_url_test = url_test;
 	}
@@ -95,8 +95,8 @@ public class ConectorCloudERP {
 		return response;
 	} 
 	
-	public ResponseCloudERP post(String path, Map<String, String> params, String body){
-		ResponseCloudERP response = null;
+	public Response post(String path, Map<String, String> params, String body){
+		Response response = null;
 		try {
 			response = crearConexion(prepareApiUrl(path,parametersToUrl(params)), "POST", body);
 		} catch (IOException e) {
@@ -105,7 +105,7 @@ public class ConectorCloudERP {
 		return response;
 	} 
 	
-	public ResponseCloudERP crearConexion(String url, String method, String body) throws IOException{
+	public Response crearConexion(String url, String method, String body) throws IOException{
 		
 		URL urlFacturu = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) urlFacturu.openConnection();
@@ -128,7 +128,7 @@ public class ConectorCloudERP {
 		reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String response = recorrerBuffered(reader);
 		reader.close();
-		ResponseCloudERP responseCloud = new ResponseCloudERP();
+		Response responseCloud = new Response();
 		responseCloud.setBodyString(response);
 		responseCloud.setSuccessful(connection.getResponseCode() ==  HttpsURLConnection.HTTP_OK);
 		connection.disconnect();
